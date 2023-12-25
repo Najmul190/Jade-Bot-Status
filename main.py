@@ -1,8 +1,30 @@
 import os
 import pypresence
 import sys
-from time import sleep
 import ctypes
+import pystray
+import requests
+import io
+
+from PIL import Image
+from time import sleep
+
+
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
+
+if not is_admin():
+    print("Please run this script as administrator.")
+
+    ctypes.windll.shell32.ShellExecuteW(
+        None, "runas", sys.executable, " ".join(sys.argv), None, 1
+    )
+
+    exit(0)
 
 
 def setupStartup(method="startup_folder"):
@@ -18,7 +40,7 @@ def setupStartup(method="startup_folder"):
                 os.path.join(startup_folder, f"{os.path.basename(sys.executable)}.lnk"),
             )
         except OSError as e:
-            print(f"Error creating shortcut: {e}")
+            print(f"Error creating startup file: {e}")
 
 
 def clearConsole():
@@ -27,6 +49,15 @@ def clearConsole():
     if os.name in ("nt", "dos"):
         command = "cls"
     os.system(command)
+
+
+def quitApp():
+    icon.stop()
+    global breakLoop
+
+    breakLoop = True
+
+    exit(0)
 
 
 def connectDiscord():
@@ -47,6 +78,16 @@ appdata_path = os.path.expanduser("~/AppData/Roaming")
 file_path = os.path.join(appdata_path, "referral.txt")
 
 clearConsole()
+
+icon = requests.get(
+    "https://cdn.discordapp.com/attachments/918997350238797855/1188893079982313583/jadebot.ico?ex=659c2df6&is=6589b8f6&hm=0c396ba697c89da2938b057f2a873d051e2565e9b947778a2f2e7aa089d84539&"
+)
+
+icon = pystray.Icon(
+    "Jade Bot",
+    Image.open(io.BytesIO(icon.content)),
+    menu=pystray.Menu(pystray.MenuItem("Quit", quitApp)),
+)
 
 
 print(
@@ -139,11 +180,19 @@ while True:
         connectDiscord()
 
     try:
+        sleep(5)
+
         hwnd = ctypes.windll.kernel32.GetConsoleWindow()
         ctypes.windll.user32.ShowWindow(hwnd, 0)
+
+        icon.run()
+
+        if breakLoop:
+            break
 
         sleep(15)
 
     except KeyboardInterrupt:
         print("Exiting...")
+        icon.stop()
         exit(0)
