@@ -37,7 +37,7 @@ What does turning on `Start with System` do?
 
 I messed up my referral link, how do I change it?
 
--   You can change your referral link by going to `%appdata%\Roaming` and editing the link. (Everything before `||`)
+-   You can change your referral link by going to `%appdata%` and editing the link. (Everything before `||`)
 
 ## Issues + Improvements
 
