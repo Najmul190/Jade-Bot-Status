@@ -24,6 +24,7 @@ After you've done either of the above, your Rich Presence should be up and runni
 Why does this program require Administrative Privilege?
 
 - Due to Windows not allowing you to hide the console to the system tray and having no access to write to your startup folder. Gaining this privilege allows the program to run on startup, and for it to also hide to system tray so it doesn't clutter up your taskbar.
+- If you know a different method of doing this, please let me know.
 
 How do I get my referral link?
 
