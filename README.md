@@ -34,9 +34,10 @@ I messed up my referral link, how do I change it?
 
 -   You can change your referral link by going to `%appdata%\Roaming` and editing the link. (Everything before `||`)
 
-## Issues
+## Issues + Improvements
 
 If you have any issues, feel free to open an [issue on this repository](../../issues).
+If you have any improvements, feel free to open a [pull request](../../pulls).
 
 ## Credits
 
